@@ -2,6 +2,8 @@
 
 const {packet, constants, validate, utils} = require('../lifx');
 const {assign, pick} = require('lodash');
+const dgram = require('dgram');
+const socket = dgram.createSocket('udp4');
 
 /**
  * A representation of a light bulb
@@ -83,7 +85,10 @@ Light.prototype.color = function(hue, saturation, brightness, kelvin, duration, 
     duration: duration
   }, this.client.source);
   packetObj.target = this.id;
-  this.client.send(packetObj, callback);
+  // greatly increases response time, tbd: why
+  // this.client.send(packetObj, callback);
+  const data = packet.toBuffer(packetObj);
+  socket.send(data, 0, data.length, 56700, this.address);
 };
 
 /**

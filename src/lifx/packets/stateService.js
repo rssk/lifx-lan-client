@@ -31,9 +31,9 @@ Packet.toObject = function(buf) {
   if (obj.service === 1) {
     obj.service = 'udp';
   } else if (obj.service >= 2 && obj.service <= 4) {
-    obj.serice = 'reserved';
+    obj.service = 'reserved';
   } else {
-    obj.serice = 'unknown';
+    obj.service = 'unknown';
   }
 
   obj.port = buf.readUInt32LE(offset);
